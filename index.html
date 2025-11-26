@@ -79,7 +79,7 @@
             font-size: 1.5rem;
             color: white;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.15s;
         }
 
         .hearts { 
@@ -155,7 +155,15 @@
 
 <body>
 
-<iframe width="0" height="0" src="https://open.spotify.com/intl-pt/track/12lOxvml5EBvSCzQll7xVS?si=722b6f238ea542b2" allow="autoplay"></iframe>
+<!-- 🎵 ÁUDIO OCULTO DO YOUTUBE -->
+<iframe
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/4lLUx7aN3o8?autoplay=1&mute=0&loop=1&playlist=4lLUx7aN3o8"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+</iframe>
 
 <div class="hearts" id="hearts"></div>
 
@@ -172,7 +180,7 @@ A gente gosta das nossas implicâncias, das músicas que escutamos agarrados, da
 
 Por tudo que vivemos, por tudo que superamos e por tudo o que ainda vamos construir…
 
-eu quero dar o próximo passo ao seu lado.
+eu quero dar o próximo passo ao seu lado.
 </p>
 
 <h1>A nossa história…</h1>
@@ -211,24 +219,51 @@ eu quero dar o próximo passo ao seu lado.
         document.getElementById("animacaoSim").classList.add("mostrar");
     }
 
+    /* 🟥 BOTÃO "NÃO" DESVIANDO DO MOUSE */
     const noBtn = document.getElementById("noBtn");
-    noBtn.addEventListener("mouseover", () => {
-        const x = Math.random() * (window.innerWidth - 200);
-        const y = Math.random() * (window.innerHeight - 200);
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
+
+    document.addEventListener("mousemove", (e) => {
+        const btnRect = noBtn.getBoundingClientRect();
+
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        const btnX = btnRect.left + btnRect.width / 2;
+        const btnY = btnRect.top + btnRect.height / 2;
+
+        const distX = mouseX - btnX;
+        const distY = mouseY - btnY;
+
+        const distance = Math.sqrt(distX * distX + distY * distY);
+
+        if (distance < 120) {
+            const angle = Math.atan2(distY, distX);
+
+            const moveX = -Math.cos(angle) * 60;
+            const moveY = -Math.sin(angle) * 60;
+
+            let newX = btnRect.left + moveX;
+            let newY = btnRect.top + moveY;
+
+            const minY = window.innerHeight * 0.70;
+            const maxY = window.innerHeight * 0.92;
+
+            if (newY < minY) newY = minY;
+            if (newY > maxY) newY = maxY;
+
+            if (newX < 0) newX = 0;
+            if (newX > window.innerWidth - btnRect.width)
+                newX = window.innerWidth - btnRect.width;
+
+            noBtn.style.left = newX + "px";
+            noBtn.style.top = newY + "px";
+        }
     });
 
     noBtn.style.left = "50%";
-    noBtn.style.top = "75%";
+    noBtn.style.top = "80%";
     noBtn.style.transform = "translateX(-50%)";
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
